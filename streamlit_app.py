@@ -160,3 +160,17 @@ if symbole_cherche:
                 f"Réessayez dans quelques secondes."
             )
 
+
+                # Graphique historique
+                st.subheader("📊 Historique")
+                periode = st.selectbox(
+                    "Période :",
+                    options=["1mo", "3mo", "6mo", "1y", "5y"],
+                    format_func=lambda x: {"1mo": "1 mois", "3mo": "3 mois", "6mo": "6 mois", "1y": "1 an", "5y": "5 ans"}[x],
+                )
+                
+                historique = yfinance.Ticker(symbole_cherche).history(period=periode)
+                if not historique.empty:
+                    st.line_chart(historique["Close"], use_container_width=True)
+                else:
+                    st.warning("Impossible de charger l'historique.")
